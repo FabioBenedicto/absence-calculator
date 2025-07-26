@@ -16,13 +16,13 @@ export const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-card/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-card/80 backdrop-blur-md">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <Calendar className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              FrequênciaFácil
+            <span className="text-xl font-bold text-primary">
+              MeuLimite
             </span>
           </Link>
 
@@ -55,7 +55,7 @@ export const Header = () => {
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80">
+              <SheetContent side="top" className="w-full h-full">
                 <div className="flex flex-col space-y-6 mt-6">
                   {navigation.map((item) => (
                     <Link
