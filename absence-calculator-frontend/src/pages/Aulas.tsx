@@ -6,14 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
-import { BookOpen, Upload, Plus, Trash2, Clock, Sparkles } from "lucide-react"; 
+import { BookOpen, Upload, Plus, Trash2, Clock, Sparkles } from "lucide-react";
 
 interface Class {
   id: string;
   subject: string;
-  startTime: string; 
+  startTime: string;
   endTime: string;
   dayOfWeek: number;
   room?: string;
@@ -157,7 +157,7 @@ export default function Aulas() {
             </div>
             
             <div className="flex gap-2">
-              {/* <Button onClick={() => document.getElementById('file-upload')?.click()} variant="secondary">
+              <Button onClick={() => document.getElementById('file-upload')?.click()} variant="secondary">
                 <Upload className="h-4 w-4 mr-2" />
                 Upload
               </Button>
@@ -167,7 +167,7 @@ export default function Aulas() {
                 accept="image/*,.pdf" 
                 className="hidden"
                 onChange={handleExtractFromDocument}
-              /> */}
+              />
               
               <Button onClick={handleExtractFromDocument} disabled={isExtracting}>
                 <Sparkles className="h-4 w-4 mr-2" />
@@ -296,12 +296,11 @@ export default function Aulas() {
                       {filteredClasses.map((classItem) => (
                         <div 
                           key={classItem.id}
-                          className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                          className="group flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
                         >
                           <div className="flex items-center gap-4">
                             <div className="flex flex-col items-center text-sm text-muted-foreground min-w-[60px]">
                               <span className="font-medium">{formatTime(classItem.startTime)}</span>
-                              <span className="text-xs">até</span>
                               <span className="font-medium">{formatTime(classItem.endTime)}</span>
                             </div>
                             
@@ -328,7 +327,7 @@ export default function Aulas() {
                             variant="ghost"
                             size="icon"
                             onClick={() => handleDeleteClass(classItem.id)}
-                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

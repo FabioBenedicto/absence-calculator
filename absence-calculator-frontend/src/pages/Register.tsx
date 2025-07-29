@@ -52,13 +52,13 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <Link to="/" className="inline-flex items-center space-x-2 mb-6">
             <Calendar className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              FrequênciaFácil
+            <span className="text-2xl font-bold text-primary">
+              MeuLimite
             </span>
           </Link>
         </div>
@@ -72,7 +72,7 @@ export default function Register() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-2 text-left">
                 <Label htmlFor="name">Nome completo</Label>
                 <Input
                   id="name"
@@ -85,7 +85,7 @@ export default function Register() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 text-left">
                 <Label htmlFor="email">E-mail</Label>
                 <Input
                   id="email"
@@ -98,7 +98,7 @@ export default function Register() {
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-2 text-left">
                 <Label htmlFor="password">Senha</Label>
                 <div className="relative">
                   <Input
@@ -126,7 +126,7 @@ export default function Register() {
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 text-left">
                 <Label htmlFor="confirmPassword">Confirmar senha</Label>
                 <div className="relative">
                   <Input

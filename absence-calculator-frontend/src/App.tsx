@@ -26,14 +26,14 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path='/feriados' element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <Feriados />
-            </ProtectedRoute>
+            // {/* </ProtectedRoute> */}
           } />
           <Route path='/aulas' element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <Aulas />
-            </ProtectedRoute>
+            // </ProtectedRoute>
           } />
           <Route path='/configuracoes' element={
             <ProtectedRoute>

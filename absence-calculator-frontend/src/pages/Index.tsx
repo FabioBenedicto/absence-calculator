@@ -1,8 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Header } from "@/components/Header";
 import { Link } from "react-router-dom";
 import { Calendar, Clock, BookOpen, Settings } from "lucide-react";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 const Index = () => {
   const steps = [
@@ -87,6 +88,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

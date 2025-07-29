@@ -5,13 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
-import { CalendarDays, Clock, Plus, RotateCcw } from "lucide-react";
+import { CalendarDays, Clock, Plus, RotateCcw, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const subjects = [
   "Matemática",
-  "Português", 
+  "Português",
   "História",
   "Geografia",
   "Ciências",
@@ -27,6 +28,16 @@ const recurrenceOptions = [
   { value: "monthly", label: "Mensal" }
 ];
 
+interface Class {
+  id: string;
+  subject: string;
+  startTime: string;
+  endTime: string;
+  dayOfWeek: number;
+  room?: string;
+  professor?: string;
+}
+
 export default function Faltas() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
@@ -38,12 +49,29 @@ export default function Faltas() {
   const currentWeek = getWeekDates(today);
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
+  
+
+  const mockClasses: Class[] = [
+  { id: "1", subject: "Matemática", startTime: "08:00", endTime: "09:40", dayOfWeek: 1, room: "A101", professor: "Prof. Silva" },
+  { id: "2", subject: "Português", startTime: "09:50", endTime: "11:30", dayOfWeek: 1, room: "B205", professor: "Prof. Santos" },
+  { id: "3", subject: "História", startTime: "13:30", endTime: "15:10", dayOfWeek: 1, room: "C301" },
+  { id: "4", subject: "Inglês", startTime: "08:00", endTime: "09:40", dayOfWeek: 2, room: "A102", professor: "Prof. Johnson" },
+  { id: "5", subject: "Ciências", startTime: "09:50", endTime: "11:30", dayOfWeek: 2, room: "Lab1", professor: "Prof. Costa" },
+  { id: "6", subject: "Geografia", startTime: "08:00", endTime: "09:40", dayOfWeek: 3, room: "B201" },
+  { id: "7", subject: "Educação Física", startTime: "09:50", endTime: "11:30", dayOfWeek: 3, room: "Quadra", professor: "Prof. Lima" },
+  { id: "8", subject: "Artes", startTime: "13:30", endTime: "15:10", dayOfWeek: 3, room: "Ateliê" },
+  { id: "9", subject: "Matemática", startTime: "08:00", endTime: "09:40", dayOfWeek: 4, room: "A101", professor: "Prof. Silva" },
+  { id: "10", subject: "Português", startTime: "09:50", endTime: "11:30", dayOfWeek: 4, room: "B205", professor: "Prof. Santos" },
+  { id: "11", subject: "História", startTime: "08:00", endTime: "09:40", dayOfWeek: 5, room: "C301" },
+  { id: "12", subject: "Inglês", startTime: "09:50", endTime: "11:30", dayOfWeek: 5, room: "A102", professor: "Prof. Johnson" },
+];
+
 
   function getWeekDates(date: Date) {
     const week = [];
     const startOfWeek = new Date(date);
     startOfWeek.setDate(date.getDate() - date.getDay());
-    
+
     for (let i = 0; i < 7; i++) {
       const day = new Date(startOfWeek);
       day.setDate(startOfWeek.getDate() + i);
@@ -59,8 +87,8 @@ export default function Faltas() {
   };
 
   const handleSubjectToggle = (subject: string) => {
-    setSelectedSubjects(prev => 
-      prev.includes(subject) 
+    setSelectedSubjects(prev =>
+      prev.includes(subject)
         ? prev.filter(s => s !== subject)
         : [...prev, subject]
     );
@@ -78,14 +106,14 @@ export default function Faltas() {
 
     if (selectedDates.length === 1 && selectedSubjects.length === 0) {
       toast({
-        title: "Erro", 
+        title: "Erro",
         description: "Para um dia específico, selecione as matérias.",
         variant: "destructive",
       });
       return;
     }
 
-    const message = selectedDates.length === 1 
+    const message = selectedDates.length === 1
       ? `Falta agendada para ${selectedDates[0].toLocaleDateString()} nas matérias: ${selectedSubjects.join(", ")}`
       : `Faltas agendadas para ${selectedDates.length} dias (todas as aulas do dia)`;
 
@@ -100,10 +128,15 @@ export default function Faltas() {
     setRecurrence("none");
   };
 
+  const formatTime = (time: string) => {
+    return time.substring(0, 5);
+  };
+
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Agendamento de Faltas</h1>
@@ -141,13 +174,6 @@ export default function Faltas() {
                   >
                     Mês
                   </Button>
-                  <Button
-                    variant={viewMode === "year" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("year")}
-                  >
-                    Ano
-                  </Button>
                 </div>
               </div>
             </CardHeader>
@@ -158,13 +184,13 @@ export default function Faltas() {
                     {today.getDate()}
                   </div>
                   <div className="text-lg text-muted-foreground mb-4">
-                    {today.toLocaleDateString('pt-BR', { 
-                      weekday: 'long', 
-                      month: 'long', 
-                      year: 'numeric' 
+                    {today.toLocaleDateString('pt-BR', {
+                      weekday: 'long',
+                      month: 'long',
+                      year: 'numeric'
                     })}
                   </div>
-                  <Button 
+                  <Button
                     onClick={() => setSelectedDates([today])}
                     className="w-full"
                   >
@@ -210,10 +236,21 @@ export default function Faltas() {
 
               {selectedDates.length > 0 && (
                 <div className="mt-4 p-4 bg-muted rounded-lg">
-                  <h4 className="font-medium mb-2">Datas selecionadas:</h4>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium">Datas selecionadas:</h4>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedDates([])}
+                      className="h-8 px-2"
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      Limpar todas
+                    </Button>
+                  </div>
                   <div className="flex flex-wrap gap-2">
                     {selectedDates.map((date, index) => (
-                      <Badge key={index} variant="secondary">
+                      <Badge key={index}>
                         {date.toLocaleDateString('pt-BR')}
                       </Badge>
                     ))}
@@ -235,76 +272,87 @@ export default function Faltas() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {subjects.map((subject) => (
-                    <div key={subject} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={subject}
-                        checked={selectedSubjects.includes(subject)}
-                        onCheckedChange={() => handleSubjectToggle(subject)}
-                      />
-                      <label
-                        htmlFor={subject}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {subject}
-                      </label>
+                  {mockClasses.map((classItem) => (
+                    <div key={classItem.id} className="flex items-center space-x-2">
+
+                        <div className="flex flex-col w-full">
+                          <div className="flex items-center space-x-2">
+                                                                          <Checkbox
+                          id={classItem.id}
+                          checked={selectedSubjects.includes(classItem.id)}
+                          onCheckedChange={() => handleSubjectToggle(classItem.id)}
+                        />
+                      <div className="flex items-center space-x-2 justify-between items-center border rounded p-2 w-full">
+                         <div className="flex items-center gap-4">
+                            <div className="flex flex-col items-center text-sm text-muted-foreground min-w-[60px]">
+                              <span className="font-medium">{formatTime(classItem.startTime)}</span>
+                              <span className="font-medium">{formatTime(classItem.endTime)}</span>
+                            </div>
+                            
+                            <div className="border-l h-12 mx-2"></div>
+                            
+                            <div className="flex-1">
+                              <div className="font-semibold text-lg text-left">{classItem.subject}</div>
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+                                {classItem.room && (
+                                  <Badge variant="outline" className="text-xs">
+                                    📍 {classItem.room}
+                                  </Badge>
+                                )}
+                                {classItem.professor && (
+                                  <Badge variant="outline" className="text-xs">
+                                    👨‍🏫 {classItem.professor}
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      </div>
+                       <div className="ml-6 text-left">
+                          <label htmlFor="hours">Horas faltas</label>
+                          <Input
+                            id="hours"
+                            type="time"
+                            placeholder="seu@email.com"
+                            // value={email}
+                            // onChange={(e) => setEmail(e.target.value)}
+                          />
+                      </div>
+                      </div>
+                     
+                      
                     </div>
                   ))}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Recorrência */}
-            {selectedDates.length === 1 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <RotateCcw className="h-5 w-5" />
-                    Recorrência
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Select value={recurrence} onValueChange={setRecurrence}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecionar recorrência" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {recurrenceOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Resumo e Ação */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Resumo</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-sm text-muted-foreground">
-                  {selectedDates.length === 0 && "Nenhuma data selecionada"}
-                  {selectedDates.length === 1 && "Falta para um dia específico"}
-                  {selectedDates.length > 1 && `Faltas para ${selectedDates.length} dias (todas as aulas)`}
-                </div>
-
-                <Button 
-                  onClick={handleScheduleAbsence}
-                  className="w-full"
-                  disabled={selectedDates.length === 0}
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Agendar Falta
-                </Button>
               </CardContent>
-            </Card>
-          </div>
+              </Card>
+            )}
+
+          {/* Resumo e Ação */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Resumo</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-sm text-muted-foreground">
+                {selectedDates.length === 0 && "Nenhuma data selecionada"}
+                {selectedDates.length === 1 && "Falta para um dia específico"}
+                {selectedDates.length > 1 && `Faltas para ${selectedDates.length} dias (todas as aulas)`}
+              </div>
+
+              <Button
+                onClick={handleScheduleAbsence}
+                className="w-full"
+                disabled={selectedDates.length === 0}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Agendar Falta
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
+    </div >
   );
 }

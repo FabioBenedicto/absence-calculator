@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Upload, Plus, Trash2, FileImage, Sparkles } from "lucide-react";
 
@@ -117,10 +117,10 @@ export default function Feriados() {
 
   const getTypeColor = (type: Holiday['type']) => {
     switch (type) {
-      case "nacional": return "bg-red-100 text-red-800 border-red-200";
-      case "regional": return "bg-blue-100 text-blue-800 border-blue-200";
-      case "escolar": return "bg-green-100 text-green-800 border-green-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
+      case "nacional": return "bg-destructive/20 text-destructive border-destructive/30";
+      case "regional": return "bg-primary/20 text-primary border-primary/30";
+      case "escolar": return "bg-secondary/20 text-secondary-foreground border-secondary/30";
+      default: return "bg-muted/20 text-muted-foreground border-muted/30";
     }
   };
 
@@ -146,7 +146,7 @@ export default function Feriados() {
             </div>
             
             <div className="flex gap-2">
-              {/* <Button onClick={() => document.getElementById('file-upload')?.click()} variant="secondary">
+              <Button onClick={() => document.getElementById('file-upload')?.click()} variant="secondary">
                 <Upload className="h-4 w-4 mr-2" />
                 Upload
               </Button>
@@ -156,7 +156,7 @@ export default function Feriados() {
                 accept="image/*,.pdf" 
                 className="hidden"
                 onChange={handleExtractFromDocument}
-              /> */}
+              />
               
               <Button onClick={handleExtractFromDocument} disabled={isExtracting}>
                 <Sparkles className="h-4 w-4 mr-2" />
@@ -249,7 +249,7 @@ export default function Feriados() {
                       {filteredHolidays.map((holiday) => (
                         <div 
                           key={holiday.id}
-                          className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                          className="group flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
                         >
                           <div className="flex items-center gap-3">
                             <div className="text-sm text-muted-foreground">
@@ -264,7 +264,7 @@ export default function Feriados() {
                             variant="ghost"
                             size="icon"
                             onClick={() => handleDeleteHoliday(holiday.id)}
-                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

@@ -21,7 +21,7 @@
 
   @theme {
     --color-foreground: #344256;
-    --color-background: #ffffff;
+    --color-background: #f8fafc;
     --color-pastel-red: #FF6961;
     --color-muted-foreground: #808080;
     --color-primary: #dc3545;
@@ -35,6 +35,12 @@
 
     --color-card: #ffffff;
     --color-card-foreground: #344256;
+
+    --color-ring: #007bff;
+
+    --color-muted:#f1f5f9;
+
+    --color-destructive: #ef4444;
   }
   
 

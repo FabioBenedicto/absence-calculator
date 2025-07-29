@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Header } from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
 import { Settings, Save } from "lucide-react";
+import Header from "@/components/Header";
 
 export default function Configuracoes() {
   const [config, setConfig] = useState({
@@ -32,7 +32,7 @@ export default function Configuracoes() {
           <p className="text-muted-foreground">Configure os parâmetros do sistema</p>
         </div>
 
-        <div className="max-w-2xl">
+        <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export default function Configuracoes() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div>
+              <div className="text-left">
                 <Label htmlFor="attendance">Presença Mínima (%)</Label>
                 <Input
                   id="attendance"
@@ -51,13 +51,10 @@ export default function Configuracoes() {
                   value={config.minAttendance}
                   onChange={(e) => setConfig({...config, minAttendance: parseInt(e.target.value)})}
                 />
-                <p className="text-sm text-muted-foreground mt-1">
-                  Porcentagem mínima de presença necessária
-                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div className="text-left">
                   <Label htmlFor="startDate">Data de Início</Label>
                   <Input
                     id="startDate"
@@ -66,7 +63,7 @@ export default function Configuracoes() {
                     onChange={(e) => setConfig({...config, startDate: e.target.value})}
                   />
                 </div>
-                <div>
+                <div className="text-left">
                   <Label htmlFor="endDate">Data de Fim</Label>
                   <Input
                     id="endDate"

@@ -1,32 +1,41 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+    const { login, isLoading } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
     // Simular autenticação
-    setTimeout(() => {
+const success = await login(email, password);
+    
+    if (success) {
       toast({
         title: "Login realizado com sucesso!",
         description: "Você será redirecionado em instantes.",
       });
-      setIsLoading(false);
-      // Aqui você implementaria a navegação para o dashboard
-    }, 2000);
+      navigate("/faltas");
+    } else {
+      toast({
+        title: "Erro no login",
+        description: "Verifique suas credenciais e tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -35,8 +44,8 @@ export default function Login() {
         <div className="text-center">
           <Link to="/" className="inline-flex items-center space-x-2 mb-6">
             <Calendar className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              FrequênciaFácil
+            <span className="text-2xl font-bold text-primary">
+              MeuLimite
             </span>
           </Link>
         </div>
@@ -50,7 +59,7 @@ export default function Login() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-2 text-left">
                 <Label htmlFor="email">E-mail</Label>
                 <Input
                   id="email"
@@ -62,7 +71,7 @@ export default function Login() {
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-2 text-left">
                 <Label htmlFor="password">Senha</Label>
                 <div className="relative">
                   <Input
